@@ -4,19 +4,19 @@
 int lo,ln,ro,rn;
 int lineV = 0;
 int groundV = 0;
-int meanV = 200;
+int meanV = 500;
 int N = 5;
 int motorSpeed;
-int baseSpeed = 60;
+int baseSpeed = 75;
 int rightSpeed,leftSpeed;
-int maxSpeed = 60;
+int maxSpeed = 100;
 int sum_error = 0;
 
 // PID
 int error = 0;
 int pre_error = 0;
-int Kp = 20;
-int Kd = 5;
+int Kp = 28;
+int Kd = 10;
 int Ki = 0;
 int i = 1;
 
@@ -61,7 +61,7 @@ void Tl(){
     else if( W(analog(0)) && W(analog(1)) && W(analog(2)) && W(analog(3)) && W(analog(4)) ){
         error = pre_error;
     }
-    else if( B(analog(0)) && B(analog(1)) && B(analog(2)) && B(analog(3)) && B(analog(4)) ){
+    else if( B(analog(0)) && B(analog(1)) && B(analog(2)) && B(analog(3)) && B(analog(4)) || B(analog(0)) && B(analog(1)) && B(analog(2)) || B(analog(3)) && B(analog(4)) && B(analog(2)) || B(analog(2)) && B(analog(0)) && B(analog(4))){
         do_case();
     }
 
@@ -103,8 +103,8 @@ void setup() {
   glcd(4,0,"SPD: %d", maxSpeed);
   glcd(5,0,"KP: %d", Kp);
   glcd(6,0,"KD: %d", Kd);
-  while(!in(30));
-  while(in(30));
+  while(!in(16));
+  while(in(16));
   /*for(int x = 0; x <= 3; x++){
     glcdClear();
     setTextSize(10);
@@ -116,10 +116,21 @@ void setup() {
 }
 
 void loop() {
+  //obb();
+  //ao(); sleep(10000);
+  l90();
+  ff(50, 100);
+  l90();
+  ss(10000);
 //sensor_check();
-Tl();
+//Tl();
 //glcd(0,0, "DIST : %d", getdist(20));
 }
+
+void ff(int spd, int x){fd(spd); sleep(x);}
+void bb(int spd, int x){bk(spd); sleep(x);}
+void ss(int x){ao(); sleep(x);}
+
 
 void sensor_check(){
   glcd(0,1,"L: %d", analog(0));
@@ -134,3 +145,52 @@ void servo_set(){
    servo(1,0); delay(200);
   servo(2,20); delay(500);
   }
+
+
+void l90()
+{
+ ss(100);
+ while(W(analog(5)) && W(analog(6))) {ff(50, 1);}
+ ss(100);
+ sl(100); sleep(375);
+ ss(100);
+}
+
+void r90()
+{
+ ss(100);
+ while(W(analog(5)) && W(analog(6))) {ff(50, 1);}
+ ss(100);
+ sr(100); sleep(375);
+ ss(100);
+}
+
+void l180(){
+ ss(100);
+ while(W(analog(5)) && W(analog(6))) {ff(50, 1);}
+ ss(100);
+ sl(100); sleep(750);
+ ss(100); 
+}
+
+void r180(){
+ ss(100);
+ while(W(analog(5)) && W(analog(6))) {ff(50, 1);}
+ ss(100);
+ sr(100); sleep(750);
+ ss(100); 
+}
+
+void obb()//for + only
+{
+ while(W(analog(5)) && W(analog(6))) {bb(25, 1);} //ff(24);
+ if(B(analog(5)) && W(analog(6)))
+   {
+     while(W(analog(6)))  {motor(1,0);motor(2,-30);sleep(1);}
+   }
+ else if(W(analog(5)) && B(analog(6)))
+   {
+     while(W(analog(5)))  {motor(1,-30);motor(2,0);sleep(1);}
+   }
+}
+
