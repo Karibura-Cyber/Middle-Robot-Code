@@ -1,39 +1,39 @@
-#include <ipst.h>	// ATX2 Board
-#include <gp2d120.h>
-//int[] sensorsValue = new int[5]; // do not use 0 index
+#include <ipst.h>
+#include  <gp2d120.h>
 int lo,ln,ro,rn;
 int lineV = 0;
 int groundV = 0;
 int meanV = 500;
 int N = 5;
 int motorSpeed;
-int baseSpeed = 75;
+int baseSpeed = 90;
 int rightSpeed,leftSpeed;
 int maxSpeed = 100;
 int sum_error = 0;
-
 // PID
 int error = 0;
 int pre_error = 0;
-int Kp = 28;
-int Kd = 10;
+int Kp = 30;
+int Kd = 25;
 int Ki = 0;
 int i = 1;
 
 bool B(int n){  
-  if(n < meanV){ // is black
-      return true;
-  }else{
-      return false;
-  } 
+  if(n < meanV){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 bool W(int n){  
-    if(n >= meanV){ // is white
-      return true;
-  }else{
-      return false;
-  } 
+  if(n >= meanV){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 void Tl(){
@@ -57,16 +57,11 @@ void Tl(){
     }else if( B(analog(0)) && W(analog(1)) && W(analog(2)) && W(analog(3)) && W(analog(4)) ){
         error = -4;
     }
-    /// check WWWWW
+    //All white
     else if( W(analog(0)) && W(analog(1)) && W(analog(2)) && W(analog(3)) && W(analog(4)) ){
         error = pre_error;
     }
-    else if( B(analog(0)) && B(analog(1)) && B(analog(2)) && B(analog(3)) && B(analog(4)) || B(analog(0)) && B(analog(1)) && B(analog(2)) || B(analog(3)) && B(analog(4)) && B(analog(2)) || B(analog(2)) && B(analog(0)) && B(analog(4))){
-        do_case();
-    }
 
-
-   
    motorSpeed = Kp*error + Kd*(error - pre_error) + Ki*(sum_error);
    leftSpeed = baseSpeed + motorSpeed;
    rightSpeed = baseSpeed - motorSpeed;
@@ -80,12 +75,8 @@ void Tl(){
    motor(1,leftSpeed);
    motor(2,rightSpeed);
    sleep(33);  
-   //glcd(0,0,"ML: %d", leftSpeed); 
-   //glcd(1,0,"MR: %d", rightSpeed);
    pre_error = error;
    sum_error += error;
-   
-   
 }
 
 void do_case(){
@@ -111,20 +102,21 @@ void setup() {
     glcd(0,0,"%d",3-x);
     delay(1000);
   }*/
+  //servo(1,90); delay(500);
   glcdClear();
 
 }
 
 void loop() {
-  //obb();
-  //ao(); sleep(10000);
-  l90();
-  ff(50, 100);
-  l90();
-  ss(10000);
-//sensor_check();
-//Tl();
-//glcd(0,0, "DIST : %d", getdist(20));
+  /*
+  if( B(analog(0)) && B(analog(1)) && B(analog(2)) && B(analog(3)) && B(analog(4)) || B(analog(0)) && B(analog(1)) && B(analog(2)) || B(analog(3)) && B(analog(4)) && B(analog(2)) || B(analog(2)) && B(analog(0)) && B(analog(4))){
+    do_case();
+  }
+  else{
+    Tl();
+  }*/
+
+  Tl();
 }
 
 void ff(int spd, int x){fd(spd); sleep(x);}
@@ -142,8 +134,8 @@ void sensor_check(){
 
 
 void servo_set(){
-   servo(1,0); delay(200);
-  servo(2,20); delay(500);
+  servo(1,0); delay(500);
+  servo(2,80); delay(500);
   }
 
 
@@ -193,4 +185,3 @@ void obb()//for + only
      while(W(analog(5)))  {motor(1,-30);motor(2,0);sleep(1);}
    }
 }
-
