@@ -19,8 +19,14 @@ void loop()
   {
     switch (i)
     {
-    case 1:sbr();ll();lineb(); break;
-    case 2:sbr(); ss(10000); break;
+    case 1:rr(); lineb(); break;
+    case 2:rr(); lineb(); break;
+    case 3:rr(); lineb(); break;
+    case 4:rr(); lineb(); break;
+    case 5:rr(); lineb(); break;
+    case 6:rr(); lineb(); break;
+    case 7:rr(); lineb(); break;
+    case 8:ss(10000); break;
     }
     i++;
   }
@@ -29,25 +35,26 @@ void loop()
 
   else ff(10);
 }
-void ff(int x) {motor(1,50); motor(2,50); sleep(x);}
+void ff(int x) {motor(1,80); motor(2,80); sleep(x);}
 void ss(int x) {motor(1,0); motor(2,0); sleep(x);}
 void bb(int x) {motor(1,-50); motor(2,-50); sleep(x);}
 
 void sbr() {ss(50); bb(450); ss(500);}
 
-void rr() {motor(1,50); motor(2,-50);sleep(600);ss(200);}
-void ll() {motor(1,-50); motor(2,50);sleep(600);ss(200);}
-
+void rr() {bb(400);motor(1,50); motor(2,-50);sleep(450);ss(200);}
+void ll() {bb(400); motor(1,-50); motor(2,50);sleep(450);ss(200);}
+void r180() {bb(400); motor(1,-50); motor(2,50);sleep(900);ss(200);}
 
 void lineb()//for + only
 {
+  ss(200);
  while(in(28)==0 && in(29)==0) {bb(1);} //ff(24);
  if(in(28)==1 && in(29)==0)
    {
-     while(in(28)==0)  {motor(1,0);motor(2,-25);sleep(1);}
+     while(in(28)==0)  {motor(1,0);motor(2,-25);sleep(100);}
    }
  else if(in(28)==0 && in(29)==1)
    {
-     while(in(28)==0)  {motor(1,-25);motor(2,0);sleep(1);}
+     while(in(28)==0)  {motor(1,-25);motor(2,0);sleep(100);}
    }
 }
