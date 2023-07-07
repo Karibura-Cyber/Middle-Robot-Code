@@ -4,11 +4,18 @@ int i = 1;
 
 void setup()
 {
+  servo(3,90); delay(100);
   OK();
+  glcdClear();
 }
 
 void loop()
 {
+  reload(); delay(200);
+  OK();
+  shoot(); delay(200);
+  OK();
+  /*
   L1 = in(24);
   C1 = in(25);
   C2 = in(26);
@@ -19,21 +26,20 @@ void loop()
   {
     switch (i)
     {
-    case 1:rr(); lineb(); break;
+    case 1:ll(); lineb(); fl90(); lineb(); break;
     case 2:rr(); lineb(); break;
-    case 3:rr(); lineb(); break;
-    case 4:rr(); lineb(); break;
+    case 3:r180(); lineb(); break;
+    case 4:ll(); lineb(); break;
     case 5:rr(); lineb(); break;
-    case 6:rr(); lineb(); break;
-    case 7:rr(); lineb(); break;
-    case 8:ss(10000); break;
+    case 6:ss(10000); break;
     }
     i++;
   }
   else if (L1 == 1){motor(1, 50); motor(2, 0);}
   else if (R2 == 1){motor(1, 0); motor(2, 50);}
 
-  else ff(10);
+  else ff(10);*/
+
 }
 void ff(int x) {motor(1,80); motor(2,80); sleep(x);}
 void ss(int x) {motor(1,0); motor(2,0); sleep(x);}
@@ -41,9 +47,12 @@ void bb(int x) {motor(1,-50); motor(2,-50); sleep(x);}
 
 void sbr() {ss(50); bb(450); ss(500);}
 
-void rr() {bb(400);motor(1,50); motor(2,-50);sleep(450);ss(200);}
-void ll() {bb(400); motor(1,-50); motor(2,50);sleep(450);ss(200);}
+void rr() {bb(400);motor(1,50); motor(2,-50);sleep(470);ss(200);}
+void ll() {bb(400); motor(1,-50); motor(2,50);sleep(470);ss(200);}
 void r180() {bb(400); motor(1,-50); motor(2,50);sleep(900);ss(200);}
+
+void fl90() {ff(1000); ll();}
+void fr90() {ff(1000); rr();}
 
 void lineb()//for + only
 {
@@ -58,3 +67,6 @@ void lineb()//for + only
      while(in(28)==0)  {motor(1,-25);motor(2,0);sleep(100);}
    }
 }
+
+void reload(){servo(3,90); delay(100);}
+void shoot(){servo(3,30); delay(100);}
