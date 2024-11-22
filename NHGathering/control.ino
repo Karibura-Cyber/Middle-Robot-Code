@@ -107,23 +107,14 @@ void sff(int step) {
 }
 
 
-void ff(int x) {
-  fd(baseSpeed);
-  sleep(x);
-}  //วิ่งตรงตามเวลา
-void bb(int x) {
-  bk(baseSpeed);
-  sleep(x);
-}  //ถอยหลังตามเวลา
-void ss(int x) {
-  ao();
-  sleep(x);
-}  //หยุดตามเวลา
+void ff(int x) { fd(baseSpeed); sleep(x); }  //วิ่งตรงตามเวลา
+void bb(int x) { bk(baseSpeed); sleep(x); }  //ถอยหลังตามเวลา
+void ss(int x) { ao(); sleep(x); }  //หยุดตามเวลา
 
 
 void bigKeep() { servo(2, 135); }  //คีบลูกใหญ่
 void smallKeep() { servo(2, 150); }  //คีบลูกเล็ก
-void unkeep() { servo(2, 30); }  //ปล่อย
+void unKeep() { servo(2, 30); }  //ปล่อย
 
 void upFull(){servo(1, 180);}
 void upHalf(){servo(1, 125);}

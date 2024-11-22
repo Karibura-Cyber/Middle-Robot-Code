@@ -15,7 +15,7 @@ int error = 0;
 int lastError = 0;
 float integral = 0;
 float derivative = 0;
-int baseSpeed = 50;
+int baseSpeed = 80;
 
 NH8CHIR front(0x4B);
 
@@ -23,7 +23,7 @@ void setup() {
   // Serial.begin(115200);
   front.init();
   upFull();
-  // servo(2, 30); delay(500);
+  bigKeep();
   sound(1200, 100); delay(20);
   sound(1200, 100); delay(20);
   OK();
