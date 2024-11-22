@@ -2,7 +2,7 @@
 void readFrontSensors() {
   for (int i = 0; i < 8; i++) {
     int analogValue = front.read(i, SD);
-    sensorValues[i] = (analogValue > threshold) ? 1 : 0;
+    sensorValues[i] = (analogValue < threshold) ? 1 : 0;
   }
 }
 
@@ -39,6 +39,22 @@ void PIDControl() {
   int rightMotorSpeed = baseSpeed - correction;
 
   fd2(leftMotorSpeed, rightMotorSpeed);
+  
+  lastError = error;
+}
+
+void reverse_PIDControl() {
+  readFrontSensors();
+  error = calculateError();
+  integral += error;
+  derivative = error - lastError;
+  
+  float correction = Kp * error + Ki * integral + Kd * derivative;
+  
+  int leftMotorSpeed = baseSpeed - correction;
+  int rightMotorSpeed = baseSpeed + correction;
+
+  bk2(leftMotorSpeed, rightMotorSpeed);
   
   lastError = error;
 }
