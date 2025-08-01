@@ -17,18 +17,19 @@ void setup() {
   sound(2000, 100);
   waitSW_A_bmp();
   delay(1000);
-  gyroFD(40, 50);
-  gyroSpin(-90);
-  gyroFD(40, 50);
-  gyroSpin(90);
-  gyroFD(20, 50);
-  gyroSpin(90);
-  gyroFD(25, 50);
+
+  //=============================================== WALL FUNCTIONS EXAMPLES ===============================
+  gyroFD(20, 50);               // GYRO FORWARD 20 UNITS WITH 50% SPEED
+  gyroSpin(90);                 // GYRO SPIN LEFT 90 DEGREES
+
+  gyroFD(20, 50);               // GYRO FORWARD 20 UNITS WITH 50% SPEED
+  gyroSpin(-90);                 // GYRO SPIN RIGHT 90 DEGREES
 }
 
 void loop() {
 }
 
+//GYRO SPIN LEFT AND RIGHT BY DEGREES [ POSITIVE FOR TURN LEFT | NEGATIVE FOR TURN RIGHT ]
 void gyroSpin(int relative_degree) {
   int min_speed = 20;
   int max_speed = 100;
@@ -97,6 +98,7 @@ void gyroSpin(int relative_degree) {
   }
 }
 
+// FORWARD VIA GYROSCOPE WITH DISTANCE AND SPEED
 void gyroFD(float distance, int baseSpeed = 50) {
   // PID gains for straight-line correction
   float Kp = 2.0;    // Proportional gain
