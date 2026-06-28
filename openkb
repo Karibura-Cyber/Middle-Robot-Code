@@ -1,13 +1,13 @@
-import display
 import buzzer
 import switch
 import random
+import display
 import time
 
 answer = []
 user_input = []
-
 point = 0
+
 
 def waitSwitch():
     while True:
@@ -15,25 +15,75 @@ def waitSwitch():
             while switch.value(switch.S1):
                 pass
             return 1
-        
+
         if switch.value(switch.S2):
             while switch.value(switch.S2):
                 pass
             return 2
 
+
 while True:
-    answer.append(random.randint(1, 2)) # Random number from 1 - 2 then assign to answer
-    user_input = []     # Clear user_input list
 
-    display.clear()     # Clear display
-    time.sleep(1)       # Wait for 1 second
+    # เพิ่มลำดับใหม่
+    answer.append(random.randint(1, 2))
 
+    # ล้างข้อมูลการกดของผู้เล่น
+    user_input = []
+
+    display.clear()
+    time.sleep(1)
+
+    # แสดงลำดับ
     for value in answer:
         display.show4x8(value)
         buzzer.tone(1500, 0.1)
-        time.sleep(0.5)
+        time.sleep(0.6)
 
         display.clear()
-        time.sleep(0.5)
-    
-    
+        time.sleep(0.3)
+
+    # รับคำตอบจากผู้เล่น
+    for i in range(len(answer)):
+
+        press = waitSwitch()
+
+        # เก็บข้อมูลที่ผู้เล่นกด
+        user_input.append(press)
+
+        # แสดงปุ่มที่กด
+        display.show4x8(press)
+        buzzer.tone(2000, 0.05)
+        time.sleep(0.2)
+        display.clear()
+
+        # ตรวจสอบว่ากดถูกหรือไม่
+        if user_input[i] != answer[i]:
+
+            # เสียง Game Over
+            buzzer.tone(1200, 0.15)
+            time.sleep(0.05)
+            buzzer.tone(900, 0.15)
+            time.sleep(0.05)
+            buzzer.tone(600, 0.15)
+            time.sleep(0.05)
+            buzzer.tone(300, 0.4)
+
+            # แสดงข้อความ
+            display.show4x8("X")
+            time.sleep(1)
+
+            display.scroll("GAME OVER")
+            display.show4x8(point)
+
+            while True:
+                pass
+
+    # ผ่านด่าน
+    point += 1
+
+    # เสียงผ่านด่าน
+    buzzer.tone(1200, 0.08)
+    time.sleep(0.02)
+    buzzer.tone(1600, 0.08)
+    time.sleep(0.02)
+    buzzer.tone(2000, 0.12)	
